@@ -1,0 +1,50 @@
+class Solution(object):
+    
+      def isAdditiveNumber(self, num):
+        """
+        :type num: str
+        :rtype: bool
+        """  
+        def backtracking(start, path): 
+            """
+            :type start: int
+            :path: list [int]
+            """ 
+            # base case 1: if we check the entire string and we have 3 numbers in our set 
+            # Then return True 
+            if(start >= len(num) and len(path) >= 3):
+                return True
+
+            #recursive step: 
+            for end in range(start+1, len(num)+1): 
+
+                #checks for edge case: leading 0 
+                if (num[start] == '0' and end > start + 1): 
+                    #if the leading digit is 0 and the string is
+                    #greater than one then we break out of the for 
+                    #loop since it is not valid sub-number to add  
+                    break  
+
+                #obtain and convert the first number  
+                next_num = int (num[start:end])
+
+                #we have at least num1 and num2 to add up 
+                if len(path) >= 2:
+                    #if the sume of num1 and num is not equal to the 
+                    # next number (num3) them we contiue 
+                    if (next_num != path[-1] + path [-2]):
+                        #continue within the for loop checking for other combos
+                        continue
+                
+                #append the next_num to our path 
+                path.append(next_num)
+
+                # if the backtracking
+                if backtracking(end,path):
+                    return True 
+                
+                #if the number is not 
+                path.pop()
+            return False
+
+        return backtracking(0, [])
